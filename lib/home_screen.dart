@@ -5,7 +5,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'widgets/custom_appbar.dart';
 import 'utils/dummy_model.dart';
 import 'utils/my_theme.dart';
-import 'widgets/page_view_item.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -22,23 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _current = 0;
   final CarouselController _cController = CarouselController();
 
-  /// The current page of the page view
-  double _page = 0;
-
-  /// The index of the leftmost element of the list to be displayed
-  int get _firstItemIndex => _page.toInt();
-
-  /// The offset of the leftmost element of the list to be displayed
-  // double get _firstItemOffset => _controller.hasClients ? 1 - (_page % 1) : 1;
-
-  /// Controller to get the current position of the page view
-  final _controller = PageController(
-    viewportFraction: 0.5,
-  );
-
-  /// The width of a single item
-  late final _itemWidth =
-      MediaQuery.of(context).size.width * _controller.viewportFraction;
+  
 
   FocusNode searchNode = FocusNode();
 
@@ -50,9 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() => setState(() {
-          _page = _controller.page!;
-        }));
+    
   }
 
   @override
@@ -119,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 16, fontWeight: FontWeight.w500)),
                     ),
                     const SizedBox(height: 10),
-                    _buildEditorsChoice(),
+                  
                     const SizedBox(height: 30),
                   ],
                 ),
@@ -378,47 +359,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _buildEditorsChoice() {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: SizedBox(
-              width: _itemWidth,
-              child: FractionallySizedBox(
-
-                child: PageViewItem(
-                  index: _firstItemIndex,
-                  width: _itemWidth,
-                  url: model[_firstItemIndex].image,
-
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 250,
-          child: PageView.builder(
-            padEnds: false,
-            controller: _controller,
-            itemBuilder: (context, index) {
-              return Opacity(
-                opacity: index <= _firstItemIndex ? 0 : 1,
-                child: PageViewItem(
-                  index: index,
-
-                  width: _itemWidth,
-                  url: model[index].image,
-
-                ),
-              );
-            },
-            itemCount: model.length,
-          ),
-        ),
-      ],
-    );
-  }
+ 
 }
